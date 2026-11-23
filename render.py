@@ -282,7 +282,7 @@ cards = [
     ("Gaza a 'toxic wasteland', Oxfam report finds",
      "Contamination signs across >99%;", "61m+ tonnes of debris (Oxfam)", "toxic"),
     ("Belgium strike grounds almost all flights",
-     "429 flights axed at Brussels;", "~59,500 passengers hit (airport)", "plane"),
+     "429 flights axed at Brussels;", "Charleroi shut; ~59,500 hit", "plane"),
     ("Cikande search continues after factory fire",
      "24 body bags recovered Sunday;", "34 unaccounted for; ID pending", "fire"),
     ("Nepal PM Shah lands in Delhi",

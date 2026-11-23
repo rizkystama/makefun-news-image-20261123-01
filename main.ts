@@ -6,8 +6,8 @@
 // sha256 below. The copy is read back and hashed again, so the file the
 // judge sees is the approved render byte for byte.
 //
-// Approved render: entry.png, 1024x1024 RGB, 195,730 bytes,
-// sha256 cc06f8af133e1feb6bfc84b65bdf1a8068960fd5da034df153184e3e44d66a82.
+// Approved render: entry.png, 1024x1024 RGB, 195,685 bytes,
+// sha256 90d0c3d1e574ecd48d466d26731966124a3bc993b4e15fc5b95a73ef28f46348.
 // Produced by render.py in this repository (deterministic PIL; run twice,
 // byte-identical). Concept A broadsheet, 29 verified Monday 23 November
 // 2026 stories: COP31 Monday fallout, Merkury sinking + Kyiv toll, Kospi
@@ -17,6 +17,13 @@
 // Riemann item removed (Nature report dated 20 Nov), KOSPI timeline
 // 06:30 UTC, Indonesia card reframed as Monday's continuing search,
 // fund corrected to ₩10.76tn (verified vs Korea JoongAng Daily).
+// v3 revision (23 Nov ~17:45 WIB, from Rizky's Grok-sourced corrections,
+// each verified against sources): Belgium card gains "Charleroi shut"
+// (Charleroi cancelled all flights all day — europesays, Travel Tomorrow,
+// QNC News, VolClaim, TravelExtra). A DATE CHECK footer clarification was
+// tried and reverted: it pushed the amber row onto the sources footer.
+// NHS "~700,000", Cikande wording and all map pins were verified already
+// correct and left unchanged.
 // Fixes after first render (parent visual check): NHS + Gaza captions
 // shortened to fit their cards, Lowy chart numbers moved clear of the
 // bars, lead-3 body trimmed so the Nasdaq figure appears once (card 15).
@@ -31,7 +38,7 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const SRC = join(HERE, "entry.png");
 
 const EXPECTED_SHA256 =
-  "cc06f8af133e1feb6bfc84b65bdf1a8068960fd5da034df153184e3e44d66a82";
+  "90d0c3d1e574ecd48d466d26731966124a3bc993b4e15fc5b95a73ef28f46348";
 
 // PNG magic bytes (89 50 4E 47 0D 0A 1A 0A). The judge tells the format from
 // the first bytes, so a non-PNG here would fail intake outright.
