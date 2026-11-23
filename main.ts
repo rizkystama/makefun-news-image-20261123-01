@@ -6,13 +6,17 @@
 // sha256 below. The copy is read back and hashed again, so the file the
 // judge sees is the approved render byte for byte.
 //
-// Approved render: entry.png, 1024x1024 RGB, 194,767 bytes,
-// sha256 abaaa2f3d63733d5cb8b7a53b15deef4a3e37a36b2ceec5809d11bce3418f695.
+// Approved render: entry.png, 1024x1024 RGB, 195,730 bytes,
+// sha256 cc06f8af133e1feb6bfc84b65bdf1a8068960fd5da034df153184e3e44d66a82.
 // Produced by render.py in this repository (deterministic PIL; run twice,
-// byte-identical). Concept A broadsheet, 30 verified Monday 23 November
+// byte-identical). Concept A broadsheet, 29 verified Monday 23 November
 // 2026 stories: COP31 Monday fallout, Merkury sinking + Kyiv toll, Kospi
 // -3.31%. ChatGPT concept review 23 Nov ~18:20 WIB: GO WITH CONDITIONS
-// (Concept A wins; all 8 conditions applied — see CONCEPT.md).
+// (Concept A wins; all 8 conditions applied — see CONCEPT.md). Final
+// review 23 Nov ~19:25 WIB: GO AFTER CORRECTIONS — v2 applies all 4:
+// Riemann item removed (Nature report dated 20 Nov), KOSPI timeline
+// 06:30 UTC, Indonesia card reframed as Monday's continuing search,
+// fund corrected to ₩10.76tn (verified vs Korea JoongAng Daily).
 // Fixes after first render (parent visual check): NHS + Gaza captions
 // shortened to fit their cards, Lowy chart numbers moved clear of the
 // bars, lead-3 body trimmed so the Nasdaq figure appears once (card 15).
@@ -27,7 +31,7 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const SRC = join(HERE, "entry.png");
 
 const EXPECTED_SHA256 =
-  "abaaa2f3d63733d5cb8b7a53b15deef4a3e37a36b2ceec5809d11bce3418f695";
+  "cc06f8af133e1feb6bfc84b65bdf1a8068960fd5da034df153184e3e44d66a82";
 
 // PNG magic bytes (89 50 4E 47 0D 0A 1A 0A). The judge tells the format from
 // the first bytes, so a non-PNG here would fail intake outright.

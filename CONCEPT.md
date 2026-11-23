@@ -24,7 +24,19 @@ Rubio card drops the "seven conditions" number; Lowy scores kept with
 (Lowy Institute) attribution; Belgium 429/~59,500 kept (Brussels Airport
 sourced). Congo Ebola + SAPS 581 already excluded by parent verification.
 
-**Stories: 30 verified Monday items** — 3 leads + 12 cards + 15 ALSO items.
+**ChatGPT FINAL QUALITY REVIEW 23 Nov ~19:25 WIB** (same chat
+c/6b04133a-8554-83ec-81de-44539114fc09): **GO AFTER CORRECTIONS** — "STOP
+EDITING AND SUBMIT" once the 4 fixes are applied. 300px hierarchy PASS.
+All 4 applied in v2: (1) Riemann item REMOVED (Nature report dated 20 Nov;
+its Monday angle already sits in the Wang ALSO item); (2) KOSPI timeline
+06:00 → 06:30 UTC (15:30 KST close); (3) Indonesia card reframed as
+Monday's continuing search after Sunday's recovery + DATE CHECK green row
+gains "Cikande search continues"; (4) fund corrected to ₩10.76tn,
+verified vs Korea JoongAng Daily 23 Nov (Finance Minister Lee Hyoung-il,
+est. 2020, never deployed, timing/size undecided), worded "prepares to
+activate … deployment undecided".
+
+**Stories: 29 verified Monday items** — 3 leads + 12 cards + 14 ALSO items.
 Research: ~/workspace/makefun/news-image-20261123-research/verified-stories-2026-11-23.md
 (researcher session ec25b97b; 30 verified, 19 excluded, 7 still-developing).
 Parent spot-checks: Democrats-258 reached SUNDAY (Hubbard beat Foxx by ~330

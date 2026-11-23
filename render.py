@@ -14,6 +14,14 @@ Kyiv "at least 15" (AFP) / "11 in Dymer" (Reuters); Indonesia AP 34 missing
 + forensic ID pending; Gaza "indicators of potential contamination";
 NHS "AI-assisted trial"; Seoul fund "readies"; Hormuz CLAIM + Sun/Monday
 note; Iran 78 drones Tehran-only; Rubio card drops "seven conditions".
+Final review 23 Nov ~19:25 WIB: GO AFTER CORRECTIONS — 4 fixes applied:
+Riemann item REMOVED (Nature report dated 20 Nov, not Monday; its Monday
+angle already sits in the Wang ALSO item); KOSPI timeline 06:00 -> 06:30 UTC
+(15:30 KST close); Indonesia card reframed as Monday's continuing search
+after Sunday's recovery; fund corrected to ₩10.76tn (verified vs Korea
+JoongAng Daily 23 Nov: Finance Minister Lee Hyoung-il, est. 2020, never
+deployed, timing/size undecided) with "prepares to activate" wording.
+29 stories: 3 leads + 12 cards + 14 ALSO.
 Output: entry.png, 1024x1024, <=1 MiB. Deterministic: no randomness, no time.
 """
 from PIL import Image, ImageDraw, ImageFont
@@ -107,7 +115,7 @@ d = ImageDraw.Draw(img)
 # ---------------------------------------------------------------- top band 0-18
 d.rectangle([0, 0, 1024, 18], fill=NAVY)
 d.text((10, 3), "THE WORLD IN ONE DAY", font=F["band"], fill=(255, 255, 255))
-r = "30 STORIES  ·  6 REGIONS + GLOBAL  ·  MONDAY 23 NOVEMBER 2026 NEWS EDITION"
+r = "29 STORIES  ·  6 REGIONS + GLOBAL  ·  MONDAY 23 NOVEMBER 2026 NEWS EDITION"
 d.text((1014 - d.textlength(r, font=F["band"]), 3), r, font=F["band"],
        fill=(255, 220, 130))
 
@@ -124,7 +132,7 @@ stats = [("15", "KILLED AROUND KYIV"),
          ("700,000", "WOMEN IN NHS AI TRIAL"),
          ("429", "FLIGHTS AXED IN BELGIUM"),
          ("24", "BODY BAGS, INDONESIA FIRE"),
-         ("₩10tn", "SEOUL STABILISATION FUND")]
+         ("₩10.76tn", "SEOUL STABILISATION FUND")]
 for i, (n, lab) in enumerate(stats):
     x0 = 8 + i * 168
     center(d, x0 + 84, 103, n, F["stat_n"], RED if i in (0, 1, 5) else INK)
@@ -137,7 +145,7 @@ d.line([8, 138, 1016, 138], fill=INK, width=1)
 regs = [("ASIA-PACIFIC", 7, (184, 120, 20)), ("MIDDLE EAST", 6, RED),
         ("EUROPE", 8, (60, 90, 140)), ("AMERICAS", 5, (13, 100, 100)),
         ("AFRICA", 1, (120, 90, 40)), ("OCEANIA", 1, (90, 60, 130)),
-        ("GLOBAL", 2, NAVY)]
+        ("GLOBAL", 1, NAVY)]
 rx = 8
 for name, n, col in regs:
     label = f"{name} {n}"
@@ -150,7 +158,7 @@ d.text((rx + 4, 143), "ONE DAY  ·  ONE PAGE", font=F["reg"], fill=GREY)
 # ---------------------------------------------------------------- timeline 158-178
 d.rectangle([8, 160, 1016, 178], fill=INK)
 tl = ("THE DAY IN UTC   01:00 NHS AI TRIAL OPENS   ·   03:09 IRGC DRONE TALLY   ·   "
-      "06:00 KOSPI CLOSES -3.31%   ·   08:05 ZELENSKYY: MERKURY SUNK   ·   "
+      "06:30 KOSPI CLOSES -3.31%   ·   08:05 ZELENSKYY: MERKURY SUNK   ·   "
       "19:00 RUBIO MEETS QATAR PM")
 f = F["time"]
 while d.textlength(tl, font=f) > 1000 and f.size > 8:
@@ -260,10 +268,10 @@ tag(d, x0 + LW - 64, LY0 + 93, "-3.31%", RED)
 for j, ln in enumerate(wrap(d, "Kospi dives 3.31% as the AI-bubble rout spreads",
                             F["lead"], LW - 16)):
     d.text((x0 + 8, LY0 + 110 + j * 20), ln, font=F["lead"], fill=INK)
-body3 = ("Seoul's index closed at 4,708.54, its lowest since 13 January, "
-         "after falling 5.1% intraday; Seoul readies a ₩10tn stabilisation "
-         "fund. It extends Friday's US rout; US futures bounced Monday. "
-         "(Yonhap, CNBC)")
+body3 = ("Seoul's index closed at 4,708.54, lowest since 13 January, "
+         "after falling 5.1% intraday. Seoul prepares to activate a "
+         "₩10.76tn fund; deployment undecided. It extends Friday's US rout; "
+         "US futures bounced Monday. (Yonhap, CNBC)")
 for j, ln in enumerate(wrap(d, body3, F["lead_b"], LW - 16)):
     d.text((x0 + 8, LY0 + 152 + j * 12), ln, font=F["lead_b"], fill=INK)
 
@@ -275,8 +283,8 @@ cards = [
      "Contamination signs across >99%;", "61m+ tonnes of debris (Oxfam)", "toxic"),
     ("Belgium strike grounds almost all flights",
      "429 flights axed at Brussels;", "~59,500 passengers hit (airport)", "plane"),
-    ("Candy-factory fire: 24 body bags found",
-     "Forensic ID pending; 34 missing;", "fire broke out Saturday (AP)", "fire"),
+    ("Cikande search continues after factory fire",
+     "24 body bags recovered Sunday;", "34 unaccounted for; ID pending", "fire"),
     ("Nepal PM Shah lands in Delhi",
      "\u20b915,000-crore aid; 8 MoUs signed;", "new Ayodhya\u2013Janakpur train (ANI)", "flags"),
     ("China unveils 2030 eldercare plan",
@@ -484,7 +492,7 @@ for num, lon, lat, dx, dy in PINS:
                 outline=RED, width=1)
     d.text((lx + 3, ly + 1.5), num, font=F["pin"], fill=RED)
 d.text((MAPX0, MY0 + 164),
-       "No pin: 16-30 (ALSO list). 2 also at Benghazi, Libya.",
+       "No pin: 16-29 (ALSO list). 2 also at Benghazi, Libya.",
        font=F["cap"], fill=GREY)
 
 # DATE CHECK (right)
@@ -497,12 +505,13 @@ dc_rows = [
      "Democrats' 258th House seat (Sun) \u00b7 COP31 collapse itself (Sun) \u00b7 "
      "Verstappen GP (Sat) \u00b7 Chapo Isidro (Fri) \u00b7 Alcaraz title (Sun) \u00b7 "
      "Liverpool 4-0 Man Utd (Sun) \u00b7 Shenzhen summit (Thu) \u00b7 SAPS stats "
-     "(Fri) \u00b7 Ebola 11,000 (mid-Nov) \u00b7 Ship seizure disclosed (Fri)"),
+     "(Fri) \u00b7 Ebola 11,000 (mid-Nov) \u00b7 Ship seizure disclosed (Fri) \u00b7 "
+     "Riemann proof claim (Fri)"),
     (GREEN, "INCLUDED \u2014 MONDAY DEVELOPMENTS",
      "COP31 fallout \u00b7 Zelenskyy's Merkury announcement (Sun operation, "
      "Mon claim) \u00b7 Kyiv toll rises to 15 \u00b7 Kospi slide + Seoul fund \u00b7 "
      "NHS trial launch \u00b7 Belgium strike \u00b7 Hormuz mine claim first "
-     "reported Mon (Tasnim) \u00b7 Bulgari funeral"),
+     "reported Mon (Tasnim) \u00b7 Bulgari funeral \u00b7 Cikande search continues"),
     (AMBER, "NOT YET DECIDED",
      "US market close (futures up; close ~21:00 UTC) \u00b7 Rubio\u2013Qatar "
      "readout (19:00 UTC) \u00b7 Kyiv toll may still rise \u00b7 Belgium airspace "
@@ -521,7 +530,7 @@ d.text((DX0 + 8, DY1 - 16), "Sources checked through ~11:30 UTC, Mon 23 Nov 2026
        font=F["cap"], fill=GREY)
 
 # ---------------------------------------------------------------- ALSO list 794-978
-d.text((8, 796), "ALSO ON MONDAY 23 NOVEMBER \u2014 15 MORE STORIES",
+d.text((8, 796), "ALSO ON MONDAY 23 NOVEMBER \u2014 14 MORE STORIES",
        font=F["sect"], fill=INK)
 d.line([8, 814, 1016, 814], fill=INK, width=1)
 also = [
@@ -537,7 +546,6 @@ also = [
     "US envoy floats NATO-style guarantees for Ukraine",
     "Sudanese widowed mothers struggle amid war",
     "Europe's 'hot autumn' protests: economic symptom",
-    "Riemann proof claim: Nature weighs in Monday",
     "Taiwan shares slip 0.93%; Japan shut for holiday",
     "France hopefuls both question Ukraine aid",
 ]
@@ -555,7 +563,7 @@ d.text((8, 990),
        "Sources: Reuters \u00b7 BBC \u00b7 AP \u00b7 AFP \u00b7 Al Jazeera \u00b7 ESPNcricinfo \u00b7 Lowy Institute \u00b7 Oxfam/CEOBS \u00b7 official statements",
        font=F["foot"], fill=GREY)
 d.text((8, 1002),
-       "30 stories checked against reporting available on 23 Nov 2026 to ~11:30 UTC. Scenes are drawn illustrations, not photographs.",
+       "29 stories checked against reporting available on 23 Nov 2026 to ~11:30 UTC. Scenes are drawn illustrations, not photographs.",
        font=F["foot"], fill=GREY)
 r1 = "REPORTED = carried by the day's wires   CLAIM = one side's account, labelled"
 d.text((1014 - d.textlength(r1, font=F["foot"]), 990), r1, font=F["foot"],
