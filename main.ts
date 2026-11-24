@@ -1,4 +1,4 @@
-// news-image-20261123 — entrypoint.
+// news-image-20261123 — entrypoint (v4 revision).
 //
 // The entry is a pre-rendered image held in this repository. This program
 // copies it to /output/entry.png after checking it is exactly the approved
@@ -6,29 +6,25 @@
 // sha256 below. The copy is read back and hashed again, so the file the
 // judge sees is the approved render byte for byte.
 //
-// Approved render: entry.png, 1024x1024 RGB, 195,685 bytes,
-// sha256 90d0c3d1e574ecd48d466d26731966124a3bc993b4e15fc5b95a73ef28f46348.
+// Approved render: entry.png, 1024x1024 RGB (v4).
 // Produced by render.py in this repository (deterministic PIL; run twice,
-// byte-identical). Concept A broadsheet, 29 verified Monday 23 November
-// 2026 stories: COP31 Monday fallout, Merkury sinking + Kyiv toll, Kospi
-// -3.31%. ChatGPT concept review 23 Nov ~18:20 WIB: GO WITH CONDITIONS
-// (Concept A wins; all 8 conditions applied — see CONCEPT.md). Final
-// review 23 Nov ~19:25 WIB: GO AFTER CORRECTIONS — v2 applies all 4:
-// Riemann item removed (Nature report dated 20 Nov), KOSPI timeline
-// 06:30 UTC, Indonesia card reframed as Monday's continuing search,
-// fund corrected to ₩10.76tn (verified vs Korea JoongAng Daily).
-// v3 revision (23 Nov ~17:45 WIB, from Rizky's Grok-sourced corrections,
-// each verified against sources): Belgium card gains "Charleroi shut"
-// (Charleroi cancelled all flights all day — europesays, Travel Tomorrow,
-// QNC News, VolClaim, TravelExtra). A DATE CHECK footer clarification was
-// tried and reverted: it pushed the amber row onto the sources footer.
-// NHS "~700,000", Cikande wording and all map pins were verified already
-// correct and left unchanged.
-// Fixes after first render (parent visual check): NHS + Gaza captions
-// shortened to fit their cards, Lowy chart numbers moved clear of the
-// bars, lead-3 body trimmed so the Nasdaq figure appears once (card 15).
-// 300px thumbnail checked: masthead, date, 3 leads and newspaper character
-// survive at 300px (same standard as the 20261121/20261122 PASS results).
+// byte-identical). v4 revision (25 Nov ~00:00 WIB, built on Rizky's
+// "Bangun v4 news-image malam ini" after R3 landed at 57.49% / rank
+// 3,458): FOUR leads across — COP31 Monday fallout, Merkury sinking +
+// Kyiv toll, the US Monday rebound (NEW lead: S&P +4.73% to 7,237.17,
+// Nasdaq +6.51%, best day since April 2025), Kospi -3.31%. 30 verified
+// Monday 23 November 2026 stories: 4 leads + 12 cards + 14 ALSO.
+// v4 carries the day's resolved evening news v3 missed: the US close
+// (21:00 UTC), Nvidia's board reinstating Jensen Huang as CEO (+31.48%,
+// ~$950B added — new card 16), the Rubio–Qatar 8th Strategic Dialogue
+// readout (card 12, upgraded from preview to outcome), the confirmed
+// Kyiv toll of 15 incl. the Dymer boy rescued after 22 hours. New
+// masthead nameplate ("THE MONDAY GLOBE"); DATE CHECK loses its
+// "not yet decided" row (all decided now) and the world map grows
+// (576x146) with reworked pin labels. Sources read through ~21:30 UTC.
+// v3 (commit f8d9363, sub 01a207ff): R1 56.96% / R2 71.46% / R3 57.49%.
+// 300px thumbnail checked before submit (same standard as the
+// 20261121/20261122 PASS results).
 import { copyFileSync, mkdirSync, readFileSync, statSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { dirname, join } from "node:path";
@@ -37,8 +33,7 @@ import { fileURLToPath } from "node:url";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const SRC = join(HERE, "entry.png");
 
-const EXPECTED_SHA256 =
-  "90d0c3d1e574ecd48d466d26731966124a3bc993b4e15fc5b95a73ef28f46348";
+const EXPECTED_SHA256 = "c31171719e878929e16407756362987389d25e564dbdb8c2cd640e8dd42859a4";
 
 // PNG magic bytes (89 50 4E 47 0D 0A 1A 0A). The judge tells the format from
 // the first bytes, so a non-PNG here would fail intake outright.

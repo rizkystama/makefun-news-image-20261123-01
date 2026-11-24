@@ -1,27 +1,60 @@
 #!/usr/bin/env python3
-"""news-image-20261123 — deterministic front-page render.
+"""news-image-20261123 — v4 revision: deterministic front-page render.
 
-Parent-direct build (20261121/20261122 precedent: parent builds directly).
-Story data: ~/workspace/makefun/news-image-20261123-research/verified-stories-2026-11-23.md
-(30 verified Monday items) + parent spot-checks (5 date traps caught:
-Democrats-258 Sunday, Shenzhen Thu, Riemann Fri, Korea $1tn Thu, SAPS Fri).
-Concept: ChatGPT-approved Concept A (editorial broadsheet), GO WITH
-CONDITIONS 23 Nov ~18:20 WIB — COP31 lead 1 as Monday fallout, Merkury
-lead 2 as a Sunday operation announced Monday, strict hierarchy for the
-300px test (leads dominate; cards by headline+icon; ALSO list compact).
-Review corrections applied: boy-rescue hours dropped (14h vs 22h conflict);
-Kyiv "at least 15" (AFP) / "11 in Dymer" (Reuters); Indonesia AP 34 missing
-+ forensic ID pending; Gaza "indicators of potential contamination";
-NHS "AI-assisted trial"; Seoul fund "readies"; Hormuz CLAIM + Sun/Monday
-note; Iran 78 drones Tehran-only; Rubio card drops "seven conditions".
-Final review 23 Nov ~19:25 WIB: GO AFTER CORRECTIONS — 4 fixes applied:
-Riemann item REMOVED (Nature report dated 20 Nov, not Monday; its Monday
-angle already sits in the Wang ALSO item); KOSPI timeline 06:00 -> 06:30 UTC
-(15:30 KST close); Indonesia card reframed as Monday's continuing search
-after Sunday's recovery; fund corrected to ₩10.76tn (verified vs Korea
-JoongAng Daily 23 Nov: Finance Minister Lee Hyoung-il, est. 2020, never
-deployed, timing/size undecided) with "prepares to activate" wording.
-29 stories: 3 leads + 12 cards + 14 ALSO.
+v3 scored R1 56.96% / R2 71.46% / R3 57.49% — far from the top-50 prize
+zone. v4 is a genuine design + content revision, not a tweak:
+
+* FOUR leads across (was 3): COP31, Merkury/Kyiv, the US Monday rebound
+  (NEW — the biggest genuinely-Monday story v3 missed), Kospi. Each lead
+  card is 246px wide with a redesigned, simpler illustration, a 2-line
+  serif headline and a ~200-char body (5 lines at 9pt); body placement is
+  dynamic (it follows the headline length) with an adaptive line cap so
+  text can never print past the card's bottom edge.
+* Three items v3 left "not yet decided" are now RESOLVED (parent-verified
+  24 Nov ~24:00 WIB from multiple wires):
+  - US markets Monday close (21:00 UTC): S&P 500 +4.73% to 7,237.17 (best
+    day since April 2025, ended a seven-day losing streak, exited
+    correction); Nasdaq +6.51% to 24,089.56 (+1,471.82 points, the
+    second-largest one-day points gain ever); Dow +3.01% to 49,595.31
+    (+1,447.98); Russell 2000 +3.40% to 2,669.66. Driver: Nvidia's board
+    unanimously reinstated Jensen Huang as CEO, eleven days after he
+    resigned; NVDA +31.48% to $165.05, biggest one-day gain since 2003,
+    roughly $950B market value added. VIX fell 25.83% to 26.62. Bitcoin
+    $61,356 (+4.68%).
+  - Rubio-Qatar readout: Rubio met Qatari PM Sheikh Mohammed bin
+    Abdulrahman Al Thani at the State Department to launch the eighth
+    U.S.-Qatar Strategic Dialogue; VP Vance met him separately at the
+    White House. The Qatari PM told Al Jazeera the region cannot afford
+    a new US-Iran escalation and Doha is pushing to revive stalled
+    talks. No breakthrough, no new agreement announced.
+  - Kyiv toll CONFIRMED: at least 15 killed in the Kyiv region (AFP):
+    Dymer 11, Vyshneve supermarket 3 (+15 wounded incl. three children),
+    Bila Tserkva 1. A seven-year-old boy and a 79-year-old woman were
+    pulled alive from the Dymer rubble after about 22 hours; two people
+    remained missing there. v3's "at least 15 / 11 in Dymer" was already
+    correct; the rescue detail joins the DATE CHECK included row.
+* New masthead nameplate ("THE MONDAY GLOBE") with the date kept huge;
+  the red subline now teases all four leads.
+* Stat strip: the Seoul fund stat (still in the Kospi lead body) is
+  replaced by +31.48% NVIDIA in green — the day's most dramatic number.
+* Timeline gains the 21:00 UTC US close.
+* DATE CHECK loses the "not yet decided" row (all decided now) and
+  narrows; the freed width goes to a BIGGER world map (576x146, was
+  496x136) with 17 pins and reworked label offsets that fix real v3
+  collisions (Tehran/Hormuz, Delhi/Tehran, Wellington/Canberra).
+* Story count 30 (was 29): 4 leads + 12 cards + 14 ALSO. The Wall Street
+  card is promoted to lead 3; the Nvidia card takes the last card slot
+  (16). Rubio card upgraded from preview to reported outcome. Bitcoin
+  ALSO item updated to the Monday close ($61,356, +4.68%).
+* Regions recounted: Asia-Pacific 7, Middle East 6, Europe 8, Americas 6
+  (Nvidia joins the Americas), Africa 1, Oceania 1, Global 1 = 30.
+
+Story data: ~/workspace/makefun/news-image-20261123-research/
+verified-stories-2026-11-23.md (v3's 29 verified Monday items) + the
+resolved facts above. Every story, number and date comes from those two
+sources; nothing is invented. Still excluded: SAPS 581-women and Congo
+Ebola 11,000 (unverified in the sweep), Riemann proof claim (20 Nov).
+Sources now read through ~21:30 UTC, Mon 23 Nov 2026.
 Output: entry.png, 1024x1024, <=1 MiB. Deterministic: no randomness, no time.
 """
 from PIL import Image, ImageDraw, ImageFont
@@ -58,6 +91,7 @@ def font(path, size):
 
 F = {
     "band": font(SANS_B, 10),
+    "name": font(SERIF_B, 22),
     "mast": font(SERIF_B, 50),
     "sub": font(SANS_B, 14),
     "stat_n": font(SANS_B, 26),
@@ -66,11 +100,11 @@ F = {
     "time": font(SANS_B, 10),
     "lead": font(SERIF_B, 18),
     "lead_s": font(SANS_B, 10),
-    "lead_b": font(SANS, 10),
+    "lead_b": font(SANS, 9),
     "cap": font(SANS, 9),
     "cap_b": font(SANS_B, 9),
-    "card_h": font(SANS_B, 11),
-    "card_c": font(SANS, 8),
+    "card_h": font(SANS_B, 10),
+    "card_c": font(SANS, 7),
     "sect": font(SANS_B, 12),
     "list": font(SANS, 10),
     "list_b": font(SANS_B, 10),
@@ -115,167 +149,221 @@ d = ImageDraw.Draw(img)
 # ---------------------------------------------------------------- top band 0-18
 d.rectangle([0, 0, 1024, 18], fill=NAVY)
 d.text((10, 3), "THE WORLD IN ONE DAY", font=F["band"], fill=(255, 255, 255))
-r = "29 STORIES  ·  6 REGIONS + GLOBAL  ·  MONDAY 23 NOVEMBER 2026 NEWS EDITION"
+r = "30 STORIES  ·  6 REGIONS + GLOBAL  ·  MONDAY 23 NOVEMBER 2026 NEWS EDITION"
 d.text((1014 - d.textlength(r, font=F["band"]), 3), r, font=F["band"],
        fill=(255, 220, 130))
 
-# ---------------------------------------------------------------- masthead 18-78
-center(d, 512, 24, "Monday 23 November 2026", F["mast"])
-center(d, 512, 80,
-       "COP31 blame game erupts  ·  Ukraine says it sank a Russian corvette  ·  Kospi dives 3.31%",
+# ---------------------------------------------------------------- masthead 18-118
+# New v4 nameplate: a distinct paper name above the huge date.
+center(d, 512, 21, "·  THE MONDAY GLOBE  ·", F["name"], NAVY)
+center(d, 512, 44, "Monday 23 November 2026", F["mast"])
+center(d, 512, 98,
+       "Wall Street roars back +4.73%  ·  COP31 blame game erupts  ·  "
+       "Zelenskyy: Ukraine sank a corvette  ·  Kospi dives 3.31%",
        F["sub"], RED)
-d.rectangle([8, 98, 1016, 100], fill=INK)
+# Classic double rule under the masthead.
+d.line([8, 114, 1016, 114], fill=INK, width=1)
+d.rectangle([8, 117, 1016, 119], fill=INK)
 
-# ---------------------------------------------------------------- stat strip 100-136
+# ---------------------------------------------------------------- stat strip 118-154
+# v4: the Seoul fund stat moves out (still in the Kospi lead body);
+# NVIDIA +31.48% in green takes the slot — the day's biggest number.
 stats = [("15", "KILLED AROUND KYIV"),
          ("-3.31%", "KOSPI ON MONDAY"),
          ("700,000", "WOMEN IN NHS AI TRIAL"),
          ("429", "FLIGHTS AXED IN BELGIUM"),
          ("24", "BODY BAGS, INDONESIA FIRE"),
-         ("₩10.76tn", "SEOUL STABILISATION FUND")]
+         ("+31.48%", "NVIDIA SHARES")]
 for i, (n, lab) in enumerate(stats):
     x0 = 8 + i * 168
-    center(d, x0 + 84, 103, n, F["stat_n"], RED if i in (0, 1, 5) else INK)
-    center(d, x0 + 84, 129, lab, F["stat_l"], GREY)
+    col = GREEN if i == 5 else (RED if i in (0, 1) else INK)
+    center(d, x0 + 84, 121, n, F["stat_n"], col)
+    center(d, x0 + 84, 145, lab, F["stat_l"], GREY)
     if i:
-        d.line([x0, 105, x0, 135], fill=GREY, width=1)
-d.line([8, 138, 1016, 138], fill=INK, width=1)
+        d.line([x0, 123, x0, 151], fill=GREY, width=1)
+d.line([8, 154, 1016, 154], fill=INK, width=1)
 
-# ---------------------------------------------------------------- region bar 138-158
+# ---------------------------------------------------------------- region bar 156-174
+# v4 recount (30 stories): AP 7, ME 6, EU 8, AM 6, AF 1, OC 1, GL 1.
 regs = [("ASIA-PACIFIC", 7, (184, 120, 20)), ("MIDDLE EAST", 6, RED),
-        ("EUROPE", 8, (60, 90, 140)), ("AMERICAS", 5, (13, 100, 100)),
+        ("EUROPE", 8, (60, 90, 140)), ("AMERICAS", 6, (13, 100, 100)),
         ("AFRICA", 1, (120, 90, 40)), ("OCEANIA", 1, (90, 60, 130)),
         ("GLOBAL", 1, NAVY)]
 rx = 8
 for name, n, col in regs:
     label = f"{name} {n}"
     w = d.textlength(label, font=F["reg"]) + 22
-    d.rectangle([rx, 140, rx + w, 156], fill=col)
-    d.text((rx + 11, 143), label, font=F["reg"], fill=(255, 255, 255))
+    d.rectangle([rx, 158, rx + w, 172], fill=col)
+    d.text((rx + 11, 161), label, font=F["reg"], fill=(255, 255, 255))
     rx += w + 4
-d.text((rx + 4, 143), "ONE DAY  ·  ONE PAGE", font=F["reg"], fill=GREY)
+d.text((rx + 4, 161), "ONE DAY  ·  ONE PAGE", font=F["reg"], fill=GREY)
 
-# ---------------------------------------------------------------- timeline 158-178
-d.rectangle([8, 160, 1016, 178], fill=INK)
-tl = ("THE DAY IN UTC   01:00 NHS AI TRIAL OPENS   ·   03:09 IRGC DRONE TALLY   ·   "
-      "06:30 KOSPI CLOSES -3.31%   ·   08:05 ZELENSKYY: MERKURY SUNK   ·   "
-      "19:00 RUBIO MEETS QATAR PM")
+# ---------------------------------------------------------------- timeline 176-196
+d.rectangle([8, 176, 1016, 196], fill=INK)
+tl = ("THE DAY IN UTC   01:00 NHS TRIAL OPENS   ·   03:09 IRGC DRONE TALLY   ·   "
+      "06:30 KOSPI -3.31%   ·   08:05 MERKURY SUNK   ·   "
+      "19:00 RUBIO MEETS QATAR PM   ·   21:00 S&P +4.73%, NASDAQ +6.51%")
 f = F["time"]
 while d.textlength(tl, font=f) > 1000 and f.size > 8:
     f = font(SANS_B, f.size - 1)
-center(d, 512, 164, tl, f, (255, 255, 255))
+center(d, 512, 180, tl, f, (255, 255, 255))
 
-# ---------------------------------------------------------------- leads 182-382
-LY0, LH = 182, 200
-LW = 330
+# ---------------------------------------------------------------- leads 200-410
+# v4: FOUR leads across, 246px wide x 210 tall. Illustrations are redrawn
+# for the narrower card; headlines are kept to 2 lines and bodies run to
+# ~200 chars (5 lines at 9pt), placed dynamically below the headline with
+# an adaptive line cap so nothing prints past the card's bottom edge.
+LY0, LH, LW = 200, 210, 246
+ILL_H = 76
 
 
-def lead_card(x0):
+def illo_cop31(ix, iy):
+    # Empty chairs + cracked globe + NO DEAL stamp, 246x76.
+    d.rectangle([ix, iy, ix + LW, iy + ILL_H], fill=(214, 232, 214))
+    d.rectangle([ix + 10, iy + 46, ix + 64, iy + 68], fill=(120, 90, 60))
+    d.rectangle([ix + 10, iy + 68, ix + 64, iy + 72], fill=(90, 65, 40))
+    for fx in (22, 38, 54):
+        d.rectangle([ix + fx - 6, iy + 26, ix + fx + 6, iy + 46],
+                    fill=(150, 140, 120), outline=(90, 80, 60), width=1)
+        d.rectangle([ix + fx - 3, iy + 32, ix + fx + 3, iy + 40],
+                    fill=(214, 232, 214))
+    d.ellipse([ix + 84, iy + 8, ix + 138, iy + 62], fill=(90, 140, 190),
+              outline=NAVY, width=2)
+    d.ellipse([ix + 96, iy + 18, ix + 112, iy + 32], fill=(120, 180, 120))
+    d.ellipse([ix + 116, iy + 38, ix + 128, iy + 52], fill=(120, 180, 120))
+    d.line([ix + 98, iy + 12, ix + 108, iy + 26, ix + 102, iy + 40,
+            ix + 118, iy + 52], fill=RED, width=2)
+    d.text((ix + 150, iy + 6), "COP31", font=font(SANS_B, 15), fill=NAVY)
+    d.text((ix + 150, iy + 26), "ANTALYA", font=F["cap_b"], fill=INK)
+    d.rectangle([ix + 148, iy + 44, ix + 236, iy + 68], outline=RED, width=3)
+    d.text((ix + 154, iy + 49), "NO DEAL", font=font(SANS_B, 12), fill=RED)
+
+
+def illo_merkury(ix, iy):
+    # Night sea, capsized hull, drones, moon — 246x76.
+    d.rectangle([ix, iy, ix + LW, iy + ILL_H], fill=(16, 28, 50))
+    for sx, sy in [(24, 14), (70, 8), (120, 16), (170, 10), (210, 16)]:
+        d.ellipse([ix + sx, iy + sy, ix + sx + 3, iy + sy + 3],
+                  fill=(255, 255, 255))
+    d.rectangle([ix, iy + 48, ix + LW, iy + ILL_H], fill=(30, 60, 95))
+    d.polygon([(ix + 48, iy + 48), (ix + 190, iy + 48), (ix + 176, iy + 64),
+               (ix + 62, iy + 64)], fill=(60, 65, 75),
+              outline=(200, 200, 200))
+    d.rectangle([ix + 104, iy + 42, ix + 134, iy + 48], fill=(60, 65, 75))
+    for mx, my in [(32, 10), (88, 6), (150, 12), (200, 8)]:
+        d.line([ix + mx, iy + my + 10, ix + mx + 12, iy + my], fill=GOLD,
+               width=2)
+        d.ellipse([ix + mx + 10, iy + my - 2, ix + mx + 15, iy + my + 3],
+                  fill=GOLD)
+    d.ellipse([ix + 222, iy + 6, ix + 240, iy + 24], fill=(230, 230, 210))
+
+
+def illo_wallst(ix, iy):
+    # Rising green chart + S&P print — 246x76.
+    d.rectangle([ix, iy, ix + LW, iy + ILL_H], fill=(255, 255, 255))
+    d.rectangle([ix + 8, iy + 8, ix + 148, iy + 68], fill=(250, 246, 238),
+                outline=GREY, width=1)
+    for gy in (22, 36, 50, 62):
+        d.line([ix + 10, iy + gy, ix + 146, iy + gy], fill=(220, 215, 200),
+               width=1)
+    d.line([ix + 14, iy + 58, ix + 48, iy + 50, ix + 82, iy + 54,
+            ix + 112, iy + 32, ix + 142, iy + 16], fill=GREEN, width=3)
+    d.ellipse([ix + 138, iy + 12, ix + 146, iy + 20], fill=GREEN)
+    d.text((ix + 158, iy + 6), "S&P 500", font=font(SANS_B, 13), fill=NAVY)
+    d.text((ix + 158, iy + 24), "+4.73%", font=font(SANS_B, 19), fill=GREEN)
+    d.text((ix + 158, iy + 46), "7,237.17", font=F["cap_b"], fill=INK)
+    d.text((ix + 158, iy + 60), "NASDAQ +6.51%", font=font(SANS_B, 8),
+           fill=GREEN)
+
+
+def illo_kospi(ix, iy):
+    # Falling red chart + Kospi print — 246x76.
+    d.rectangle([ix, iy, ix + LW, iy + ILL_H], fill=(255, 255, 255))
+    d.rectangle([ix + 8, iy + 8, ix + 148, iy + 68], fill=(250, 246, 238),
+                outline=GREY, width=1)
+    for gy in (22, 36, 50, 62):
+        d.line([ix + 10, iy + gy, ix + 146, iy + gy], fill=(220, 215, 200),
+               width=1)
+    d.line([ix + 14, iy + 16, ix + 48, iy + 26, ix + 82, iy + 24,
+            ix + 112, iy + 44, ix + 142, iy + 58], fill=RED, width=3)
+    d.ellipse([ix + 138, iy + 54, ix + 146, iy + 62], fill=RED)
+    d.text((ix + 158, iy + 6), "KOSPI", font=font(SANS_B, 15), fill=NAVY)
+    d.text((ix + 158, iy + 26), "-3.31%", font=font(SANS_B, 19), fill=RED)
+    d.text((ix + 158, iy + 48), "4,708.54", font=F["cap_b"], fill=INK)
+    d.rectangle([ix + 158, iy + 62, ix + 184, iy + 74], fill=NAVY)
+    d.rectangle([ix + 166, iy + 65, ix + 176, iy + 71], fill=(255, 255, 255))
+
+
+ILLOS = {"cop31": illo_cop31, "merkury": illo_merkury,
+         "wallst": illo_wallst, "kospi": illo_kospi}
+
+LEADS = [
+    {"kicker": "1  ·  ANTALYA, TÜRKIYE  ·  CLIMATE",
+     "tag": "NO DEAL", "tag_color": RED,
+     "headline": "COP31 blame game erupts as talks end in no deal",
+     "body": ("Antalya collapsed Sunday after ~48 hours of overtime — no deal, "
+              "no fossil-fuel mention. Monday: Bowen resignation calls, Pacific "
+              "despair, Saudi-access reports. 90+ states signed a pledge. "
+              "(Reuters)"),
+     "illo": "cop31"},
+    {"kicker": "2  ·  BENGHAZI & KYIV  ·  WAR",
+     "tag": "REPORTED", "tag_color": GREEN,
+     "headline": "Zelenskyy: Ukraine sank a Russian corvette off Libya",
+     "body": ("Zelenskyy said Monday that seven sea drones sank the Merkury "
+              "at berth; satellite images show it capsized. Russian strikes "
+              "killed at least 15 around Kyiv. A boy, 7, was pulled alive "
+              "after 22 hours. (Reuters, AFP)"),
+     "illo": "merkury"},
+    {"kicker": "3  ·  NEW YORK, USA  ·  MARKETS",
+     "tag": "+4.73%", "tag_color": GREEN,
+     "headline": "Wall Street roars back in its best day since April",
+     "body": ("The S&P 500 jumped 4.73% to 7,237.17 and the Nasdaq 6.51%, "
+              "ending a seven-day slide. Nvidia's board reinstated Jensen "
+              "Huang as CEO; its shares rose 31.48%. The Dow added 3.01% "
+              "and the VIX fell 25.83%. (AP, CNBC)"),
+     "illo": "wallst"},
+    {"kicker": "4  ·  SEOUL, S. KOREA  ·  MARKETS",
+     "tag": "-3.31%", "tag_color": RED,
+     "headline": "Kospi dives 3.31% as the AI-bubble rout spreads",
+     "body": ("Seoul's index closed at 4,708.54, lowest since 13 January, "
+              "after falling 5.1% intraday. Program trading halted for 5 "
+              "minutes. Seoul prepares to activate a ₩10.76tn fund; "
+              "deployment undecided. (Yonhap)"),
+     "illo": "kospi"},
+]
+
+for i, L in enumerate(LEADS):
+    x0 = 8 + i * (LW + 8)
     d.rectangle([x0, LY0, x0 + LW, LY0 + LH], outline=INK, width=2)
+    ILLOS[L["illo"]](x0, LY0)
+    d.text((x0 + 8, LY0 + 80), L["kicker"], font=F["lead_s"], fill=INK)
+    tw = d.textlength(L["tag"], font=F["badge"]) + 8
+    tag(d, x0 + LW - tw - 4, LY0 + 79, L["tag"], L["tag_color"])
+    hlines = wrap(d, L["headline"], F["lead"], LW - 16)
+    for j, ln in enumerate(hlines):
+        d.text((x0 + 8, LY0 + 96 + j * 19), ln, font=F["lead"], fill=INK)
+    by = LY0 + 96 + len(hlines) * 19 + 6
+    # Safety net: never print past the card's bottom edge, however the
+    # headline wraps. With 2-line headlines this allows 5 body lines.
+    max_lines = max(3, (LY0 + LH - 8 - by) // 12)
+    for j, ln in enumerate(wrap(d, L["body"], F["lead_b"], LW - 16)[:max_lines]):
+        d.text((x0 + 8, by + j * 12), ln, font=F["lead_b"], fill=INK)
 
-# --- lead 1: COP31 fallout (illustration: empty chairs + cracked globe + NO DEAL stamp)
-x0 = 8
-lead_card(x0)
-ix0, iy0, iw, ih = x0, LY0, LW, 88
-d.rectangle([ix0, iy0, ix0 + iw, iy0 + ih], fill=(214, 232, 214))
-d.rectangle([ix0 + 16, iy0 + 52, ix0 + 110, iy0 + 76], fill=(120, 90, 60))
-d.rectangle([ix0 + 16, iy0 + 76, ix0 + 110, iy0 + 80], fill=(90, 65, 40))
-for fx in (36, 62, 88):
-    d.rectangle([ix0 + fx - 7, iy0 + 30, ix0 + fx + 7, iy0 + 52],
-                fill=(150, 140, 120), outline=(90, 80, 60), width=1)
-    d.rectangle([ix0 + fx - 4, iy0 + 36, ix0 + fx + 4, iy0 + 46],
-                fill=(214, 232, 214))
-d.ellipse([ix0 + 200, iy0 + 12, ix0 + 260, iy0 + 72], fill=(90, 140, 190),
-          outline=NAVY, width=2)
-d.ellipse([ix0 + 214, iy0 + 24, ix0 + 232, iy0 + 40], fill=(120, 180, 120))
-d.ellipse([ix0 + 236, iy0 + 44, ix0 + 250, iy0 + 60], fill=(120, 180, 120))
-d.line([ix0 + 216, iy0 + 16, ix0 + 228, iy0 + 32, ix0 + 220, iy0 + 48,
-        ix0 + 238, iy0 + 62], fill=RED, width=2)
-d.ellipse([ix0 + 286, iy0 + 14, ix0 + 316, iy0 + 44], fill=(255, 255, 255),
-          outline=INK, width=2)
-d.line([ix0 + 301, iy0 + 29, ix0 + 301, iy0 + 19], fill=INK, width=2)
-d.line([ix0 + 301, iy0 + 29, ix0 + 309, iy0 + 29], fill=INK, width=2)
-d.text((ix0 + 124, iy0 + 8), "COP31", font=font(SANS_B, 16), fill=NAVY)
-d.text((ix0 + 124, iy0 + 28), "ANTALYA", font=F["cap_b"], fill=INK)
-d.rectangle([ix0 + 122, iy0 + 48, ix0 + 196, iy0 + 70], outline=RED, width=3)
-d.text((ix0 + 128, iy0 + 52), "NO DEAL", font=font(SANS_B, 13), fill=RED)
-d.text((x0 + 8, LY0 + 94), "1  ·  ANTALYA, TÜRKIYE  ·  CLIMATE", font=F["lead_s"],
-       fill=INK)
-tag(d, x0 + LW - 74, LY0 + 93, "NO DEAL", RED)
-for j, ln in enumerate(wrap(d, "COP31 blame game erupts as the talks end with no deal",
-                            F["lead"], LW - 16)):
-    d.text((x0 + 8, LY0 + 110 + j * 20), ln, font=F["lead"], fill=INK)
-body1 = ("Antalya collapsed Sunday — no deal, no fossil-fuel mention. "
-         "Monday: resignation calls for president Bowen, Pacific despair, "
-         "reports of Saudi Arabia's privileged access. 90+ states signed "
-         "an electrification pledge. (Reuters, BBC)")
-for j, ln in enumerate(wrap(d, body1, F["lead_b"], LW - 16)):
-    d.text((x0 + 8, LY0 + 152 + j * 12), ln, font=F["lead_b"], fill=INK)
-
-# --- lead 2: Merkury sinking + Kyiv toll (illustration: night sea, capsized hull, drones)
-x0 = 346
-lead_card(x0)
-ix0, iy0, iw, ih = x0, LY0, LW, 88
-d.rectangle([ix0, iy0, ix0 + iw, iy0 + ih], fill=(16, 28, 50))
-for sx, sy in [(30, 18), (90, 10), (150, 22), (210, 12), (270, 20)]:
-    d.ellipse([ix0 + sx, iy0 + sy, ix0 + sx + 3, iy0 + sy + 3],
-              fill=(255, 255, 255))
-d.rectangle([ix0, iy0 + 58, ix0 + iw, iy0 + ih], fill=(30, 60, 95))
-# capsized hull: dark keel-up shape with a red waterline
-d.polygon([(ix0 + 60, iy0 + 58), (ix0 + 240, iy0 + 58), (ix0 + 220, iy0 + 76),
-           (ix0 + 80, iy0 + 76)], fill=(60, 65, 75), outline=(200, 200, 200))
-d.rectangle([ix0 + 130, iy0 + 50, ix0 + 170, iy0 + 58], fill=(60, 65, 75))
-for mx, my in [(40, 14), (110, 8), (200, 18), (260, 10)]:
-    d.line([ix0 + mx, iy0 + my + 10, ix0 + mx + 12, iy0 + my], fill=GOLD,
-           width=2)
-    d.ellipse([ix0 + mx + 10, iy0 + my - 2, ix0 + mx + 15, iy0 + my + 3],
-              fill=GOLD)
-d.ellipse([ix0 + 286, iy0 + 8, ix0 + 310, iy0 + 32], fill=(230, 230, 210))
-d.text((x0 + 8, LY0 + 94), "2  ·  BENGHAZI & KYIV  ·  WAR", font=F["lead_s"],
-       fill=INK)
-tag(d, x0 + LW - 78, LY0 + 93, "REPORTED", GREEN)
-for j, ln in enumerate(wrap(d, "Zelenskyy: Ukraine sank a Russian corvette off Libya",
-                            F["lead"], LW - 16)):
-    d.text((x0 + 8, LY0 + 110 + j * 20), ln, font=F["lead"], fill=INK)
-body2 = ("Seven sea drones sank the Merkury at berth, Zelenskyy said "
-         "Monday; satellite images show it capsized. The strike was early "
-         "Sunday. Overnight Russian strikes killed at least 15 around Kyiv; "
-         "he urged the US to release paid-for Patriots. (Reuters, AFP)")
-for j, ln in enumerate(wrap(d, body2, F["lead_b"], LW - 16)):
-    d.text((x0 + 8, LY0 + 152 + j * 12), ln, font=F["lead_b"], fill=INK)
-
-# --- lead 3: Kospi dive (illustration: falling chart + chip)
-x0 = 684
-lead_card(x0)
-ix0, iy0, iw, ih = x0, LY0, LW, 88
-d.rectangle([ix0, iy0, ix0 + iw, iy0 + ih], fill=(255, 255, 255))
-d.rectangle([ix0 + 8, iy0 + 8, ix0 + 200, iy0 + 80], fill=(250, 246, 238),
-            outline=GREY, width=1)
-for gy in (24, 40, 56, 72):
-    d.line([ix0 + 10, iy0 + gy, ix0 + 198, iy0 + gy], fill=(220, 215, 200),
-           width=1)
-d.line([ix0 + 14, iy0 + 16, ix0 + 60, iy0 + 28, ix0 + 100, iy0 + 24,
-        ix0 + 140, iy0 + 48, ix0 + 186, iy0 + 70], fill=RED, width=3)
-d.ellipse([ix0 + 182, iy0 + 66, ix0 + 190, iy0 + 74], fill=RED)
-d.text((ix0 + 216, iy0 + 10), "KOSPI", font=font(SANS_B, 16), fill=NAVY)
-d.text((ix0 + 216, iy0 + 30), "-3.31%", font=font(SANS_B, 20), fill=RED)
-d.text((ix0 + 216, iy0 + 54), "4,708.54", font=F["cap_b"], fill=INK)
-d.rectangle([ix0 + 216, iy0 + 68, ix0 + 248, iy0 + 84], fill=NAVY)
-d.rectangle([ix0 + 226, iy0 + 73, ix0 + 238, iy0 + 79], fill=(255, 255, 255))
-d.text((x0 + 8, LY0 + 94), "3  ·  SEOUL, SOUTH KOREA  ·  MARKETS",
-       font=F["lead_s"], fill=INK)
-tag(d, x0 + LW - 64, LY0 + 93, "-3.31%", RED)
-for j, ln in enumerate(wrap(d, "Kospi dives 3.31% as the AI-bubble rout spreads",
-                            F["lead"], LW - 16)):
-    d.text((x0 + 8, LY0 + 110 + j * 20), ln, font=F["lead"], fill=INK)
-body3 = ("Seoul's index closed at 4,708.54, lowest since 13 January, "
-         "after falling 5.1% intraday. Seoul prepares to activate a "
-         "₩10.76tn fund; deployment undecided. It extends Friday's US rout; "
-         "US futures bounced Monday. (Yonhap, CNBC)")
-for j, ln in enumerate(wrap(d, body3, F["lead_b"], LW - 16)):
-    d.text((x0 + 8, LY0 + 152 + j * 12), ln, font=F["lead_b"], fill=INK)
-
-# ---------------------------------------------------------------- secondary cards 386-600
+# ---------------------------------------------------------------- secondary cards 414-618
+# v4: 12 cards, numbered 05-16. The Wall Street card is promoted to lead 3;
+# the Nvidia card (chip icon) takes the last slot. Rubio card upgraded from
+# a preview ("talks 19:00 UTC") to the reported outcome.
+# Card text geometry (FIXED 25 Nov: v4's first render clipped every card's
+# second body line against the bottom border). Card is 99px tall, border at
+# y0+99; the icon area owns y0..y0+48 and cannot shrink (icon art already
+# spans ~44px), so the text stack must fit y0+49..y0+97. DejaVu extent is
+# size x (1901+483)/2048, i.e. 10pt = 11.64px, 7pt = 8.15px, 9pt digits =
+# 8.35px (no descenders). Stack: number y0+49 (bottom y0+57.35) -> headline
+# 10pt at y0+58 / y0+68 (line 2 bottom y0+79.64) -> body 7pt c1 y0+80 /
+# c2 y0+88 (bottom y0+96.15) = 2.85px clearance above the border.
+# Tightest gap is headline line 2 -> c1 (0.36px); headline leading overlap
+# is 1.64px, the same as v3's proven 11pt/11px leading. Headline shrink is
+# wrap-safe: a smaller font can only reduce a headline's line count.
 cards = [
     ("NHS launches world's largest AI breast-screening trial",
      "EDITH: ~700,000 women, 30 sites;", "AI reads one of two readers (BBC)", "trial"),
@@ -286,30 +374,30 @@ cards = [
     ("Cikande search continues after factory fire",
      "24 body bags recovered Sunday;", "34 unaccounted for; ID pending", "fire"),
     ("Nepal PM Shah lands in Delhi",
-     "\u20b915,000-crore aid; 8 MoUs signed;", "new Ayodhya\u2013Janakpur train (ANI)", "flags"),
+     "₹15,000-crore aid; 8 MoUs signed;", "new Ayodhya–Janakpur train (ANI)", "flags"),
     ("China unveils 2030 eldercare plan",
      "Nursing beds 73% of care beds;", "as population shrinks (Reuters)", "elder"),
     ("Iran claims 78 US drones downed",
-     "Tehran's tally alone since Feb;", "Pentagon unconfirmed \u2014 CLAIM", "drone"),
-    ("Rubio meets Qatar PM on Iran",
-     "Washington talks 19:00 UTC;", "Tehran restates its terms (State Dept)", "talks"),
+     "Tehran's tally alone since Feb;", "Pentagon unconfirmed — CLAIM", "drone"),
+    ("US and Qatar launch 8th strategic dialogue",
+     "Rubio and Vance met Qatar's PM;", "no breakthrough; Doha pushes talks", "talks"),
     ("Iran says two tankers hit mines",
-     "IRGC: mines east of Hormuz;", "claim unverified \u2014 CLAIM (Tasnim)", "mine"),
+     "IRGC: mines east of Hormuz;", "claim unverified — CLAIM (Tasnim)", "mine"),
     ("New Zealand hang on to draw Test",
      "Mitchell 49* saves Wellington;", "India declared 720/9 (ESPNcricinfo)", "cricket"),
     ("Lowy Index: India holds third",
      "US 78.9, China 73.6, India 40.5;", "gap narrowest since 2018 (Lowy)", "chart"),
-    ("Wall Street's worst week since 2020",
-     "Nasdaq -5.28% Fri; S&P in correction;", "futures bounce Monday (CNBC)", "market"),
+    ("Nvidia reinstates Huang as CEO",
+     "Board acts 11 days after exit;", "shares +31.48%, ~$950B added", "chip"),
 ]
-CW, CH, GAP = 163, 104, 6
+CW, CH, GAP = 163, 99, 6
 for idx, (h, c1, c2, kind) in enumerate(cards):
     col, row = idx % 6, idx // 6
     x0 = 8 + col * (CW + GAP)
-    y0 = 386 + row * (CH + GAP)
+    y0 = 414 + row * (CH + GAP)
     d.rectangle([x0, y0, x0 + CW, y0 + CH], outline=INK, width=1)
-    d.rectangle([x0, y0, x0 + CW, y0 + 50], fill=SKY)
-    ix, iy = x0 + 8, y0 + 6
+    d.rectangle([x0, y0, x0 + CW, y0 + 48], fill=SKY)
+    ix, iy = x0 + 8, y0 + 3
     if kind == "trial":
         d.rectangle([ix + 44, iy + 6, ix + 104, iy + 42], fill=(255, 255, 255),
                     outline=NAVY, width=2)
@@ -394,25 +482,33 @@ for idx, (h, c1, c2, kind) in enumerate(cards):
         d.text((ix + 112, iy + 6), "78.9", font=font(SANS_B, 11), fill=NAVY)
         d.text((ix + 112, iy + 20), "73.6", font=font(SANS_B, 11), fill=RED)
         d.text((ix + 112, iy + 34), "40.5", font=font(SANS_B, 11), fill=TEAL)
-    elif kind == "market":
-        d.line([ix + 8, iy + 10, ix + 50, iy + 16, ix + 90, iy + 12,
-                ix + 130, iy + 38], fill=RED, width=3)
-        d.line([ix + 8, iy + 30, ix + 50, iy + 26, ix + 90, iy + 30,
-                ix + 130, iy + 20], fill=GREEN, width=2)
-        d.text((ix + 8, iy + 40), "-5.28%", font=font(SANS_B, 10), fill=RED)
-        d.text((ix + 96, iy + 40), "+1.9%", font=font(SANS_B, 10), fill=GREEN)
-    d.text((x0 + 5, y0 + 51), f"{idx + 4:02d}", font=F["cap_b"], fill=RED)
+    elif kind == "chip":
+        # Nvidia green chip + rising arrow (new v4 icon).
+        d.rectangle([ix + 30, iy + 6, ix + 90, iy + 40], fill=(118, 185, 0),
+                    outline=(40, 90, 0), width=2)
+        d.rectangle([ix + 46, iy + 16, ix + 74, iy + 30], fill=(255, 255, 255))
+        for py in (14, 24, 34):
+            d.line([ix + 24, iy + py, ix + 30, iy + py], fill=(40, 90, 0),
+                   width=2)
+            d.line([ix + 90, iy + py, ix + 96, iy + py], fill=(40, 90, 0),
+                   width=2)
+        d.line([ix + 104, iy + 38, ix + 136, iy + 10], fill=GREEN, width=3)
+        d.line([ix + 136, iy + 10, ix + 126, iy + 12], fill=GREEN, width=3)
+        d.line([ix + 136, iy + 10, ix + 134, iy + 20], fill=GREEN, width=3)
+    d.text((x0 + 5, y0 + 49), f"{idx + 5:02d}", font=F["cap_b"], fill=RED)
     for j, ln in enumerate(wrap(d, h, F["card_h"], CW - 10)[:2]):
-        d.text((x0 + 5, y0 + 61 + j * 11), ln, font=F["card_h"], fill=INK)
-    d.text((x0 + 5, y0 + 85), c1, font=F["card_c"], fill=GREY)
-    d.text((x0 + 5, y0 + 95), c2, font=F["card_c"], fill=GREY)
+        d.text((x0 + 5, y0 + 58 + j * 10), ln, font=F["card_h"], fill=INK)
+    d.text((x0 + 5, y0 + 80), c1, font=F["card_c"], fill=GREY)
+    d.text((x0 + 5, y0 + 88), c2, font=F["card_c"], fill=GREY)
 
-# ---------------------------------------------------------------- map + date check 602-790
-MX0, MX1, MY0, MY1 = 8, 520, 602, 790
+# ---------------------------------------------------------------- map + date check 622-812
+# v4: the map is BIGGER (576x146, was 496x136) because DATE CHECK lost its
+# third row; pin label offsets reworked to fix v3 collisions.
+MX0, MX1, MY0, MY1 = 8, 600, 622, 812
 d.rectangle([MX0, MY0, MX1, MY1], outline=INK, width=2)
 d.text((MX0 + 8, MY0 + 5), "WHERE IT HAPPENED", font=F["sect"], fill=INK)
 d.text((MX1 - 150, MY0 + 7), "pins = story numbers", font=F["cap"], fill=GREY)
-MAPX0, MAPY0, MAPW, MAPH = MX0 + 8, MY0 + 24, MX1 - MX0 - 16, 136
+MAPX0, MAPY0, MAPW, MAPH = MX0 + 8, MY0 + 24, MX1 - MX0 - 16, 146
 d.rectangle([MAPX0, MAPY0, MAPX0 + MAPW, MAPY0 + MAPH], fill=OCEAN)
 
 
@@ -463,24 +559,28 @@ for poly in CONTINENTS:
     d.polygon([proj(lon, lat) for lon, lat in poly], fill=LAND,
               outline=LANDLINE)
 
-# pins: (num, lon, lat, label dx, dy)
+# pins: (num, lon, lat, label dx, dy) — v4 numbering (leads 1-4, cards 05-16).
+# Label offsets chosen so neighbours don't collide: Brussels left of London,
+# Beijing below-right of Seoul, Tehran above Hormuz, Canberra below-right
+# of Wellington, Washington below-left of New York.
 PINS = [
     ("1", 30.7, 36.9, -34, 10),
     ("2", 30.5, 50.5, 8, -14),
     ("2", 20.1, 32.1, 8, 8),
-    ("3", 127.0, 37.5, 8, -14),
-    ("04", 0.1, 52.2, 8, -14),
-    ("05", 34.5, 31.5, 8, 8),
-    ("06", 4.4, 50.8, 8, -14),
-    ("07", 106.5, -6.2, -40, 8),
-    ("08", 77.2, 28.6, -34, -16),
-    ("09", 116.4, 39.9, 8, -14),
-    ("10", 51.4, 35.7, 8, 8),
-    ("11", -77.4, 38.9, -30, 10),
-    ("12", 56.5, 26.5, 8, 8),
-    ("13", 174.8, -41.3, -36, -14),
-    ("14", 149.1, -35.3, 8, -14),
-    ("15", -74.0, 40.7, 8, -14),
+    ("3", -74.0, 40.7, 8, -14),
+    ("4", 127.0, 37.5, 8, -14),
+    ("05", 0.1, 52.2, 8, -14),
+    ("06", 34.5, 31.5, 8, 8),
+    ("07", 4.4, 50.8, -40, 6),
+    ("08", 106.5, -6.2, -40, 8),
+    ("09", 77.2, 28.6, 8, -16),
+    ("10", 116.4, 39.9, 8, 8),
+    ("11", 51.4, 35.7, 8, -16),
+    ("12", -77.4, 38.9, -30, 10),
+    ("13", 56.5, 26.5, 8, 8),
+    ("14", 174.8, -41.3, -36, -14),
+    ("15", 149.1, -35.3, 8, 8),
+    ("16", -122.0, 37.4, 8, -14),
 ]
 for num, lon, lat, dx, dy in PINS:
     px, py = proj(lon, lat)
@@ -491,31 +591,28 @@ for num, lon, lat, dx, dy in PINS:
     d.rectangle([lx, ly, lx + w, ly + 12], fill=(255, 255, 255),
                 outline=RED, width=1)
     d.text((lx + 3, ly + 1.5), num, font=F["pin"], fill=RED)
-d.text((MAPX0, MY0 + 164),
-       "No pin: 16-29 (ALSO list). 2 also at Benghazi, Libya.",
+d.text((MAPX0, MY0 + 174),
+       "No pin: 17-30 (ALSO list). 2 also at Benghazi, Libya.",
        font=F["cap"], fill=GREY)
 
-# DATE CHECK (right)
-DX0, DX1, DY0, DY1 = 528, 1016, 602, 790
+# DATE CHECK (right) — v4: only TWO rows. The "not yet decided" row is gone
+# because all three items are now decided (US close, Rubio readout, Kyiv toll).
+DX0, DX1, DY0, DY1 = 608, 1016, 622, 812
 d.rectangle([DX0, DY0, DX1, DY1], outline=INK, width=2)
-d.text((DX0 + 8, DY0 + 5), "DATE CHECK \u2014 WHAT COUNTS AS 23 NOVEMBER",
+d.text((DX0 + 8, DY0 + 5), "DATE CHECK — WHAT COUNTS AS 23 NOVEMBER",
        font=F["sect"], fill=INK)
 dc_rows = [
-    (RED, "LEFT OUT \u2014 EARLIER EVENTS",
-     "Democrats' 258th House seat (Sun) \u00b7 COP31 collapse itself (Sun) \u00b7 "
-     "Verstappen GP (Sat) \u00b7 Chapo Isidro (Fri) \u00b7 Alcaraz title (Sun) \u00b7 "
-     "Liverpool 4-0 Man Utd (Sun) \u00b7 Shenzhen summit (Thu) \u00b7 SAPS stats "
-     "(Fri) \u00b7 Ebola 11,000 (mid-Nov) \u00b7 Ship seizure disclosed (Fri) \u00b7 "
+    (RED, "LEFT OUT — EARLIER EVENTS",
+     "Democrats' 258th House seat (Sun) · COP31 collapse itself (Sun) · "
+     "Verstappen GP (Sat) · Chapo Isidro (Fri) · Alcaraz title (Sun) · "
+     "Liverpool 4-0 Man Utd (Sun) · Shenzhen summit (Thu) · SAPS stats "
+     "(Fri) · Ebola 11,000 (mid-Nov) · Ship seizure disclosed (Fri) · "
      "Riemann proof claim (Fri)"),
-    (GREEN, "INCLUDED \u2014 MONDAY DEVELOPMENTS",
-     "COP31 fallout \u00b7 Zelenskyy's Merkury announcement (Sun operation, "
-     "Mon claim) \u00b7 Kyiv toll rises to 15 \u00b7 Kospi slide + Seoul fund \u00b7 "
-     "NHS trial launch \u00b7 Belgium strike \u00b7 Hormuz mine claim first "
-     "reported Mon (Tasnim) \u00b7 Bulgari funeral \u00b7 Cikande search continues"),
-    (AMBER, "NOT YET DECIDED",
-     "US market close (futures up; close ~21:00 UTC) \u00b7 Rubio\u2013Qatar "
-     "readout (19:00 UTC) \u00b7 Kyiv toll may still rise \u00b7 Belgium airspace "
-     "reopens 20:00 UTC"),
+    (GREEN, "INCLUDED — MONDAY DEVELOPMENTS",
+     "COP31 fallout · Merkury announcement (Sun operation, Mon claim) · "
+     "Kyiv toll 15 · Dymer boy rescued after 22 hours · Kospi slide + "
+     "Seoul fund · NHS trial launch · Belgium strike · Hormuz mine claim "
+     "(Tasnim) · Cikande search continues · US rebound + Nvidia (Mon close)"),
 ]
 y = DY0 + 25
 for color, head, text in dc_rows:
@@ -526,20 +623,20 @@ for color, head, text in dc_rows:
         d.text((DX0 + 22, y), ln, font=F["dc"], fill=INK)
         y += 12
     y += 6
-d.text((DX0 + 8, DY1 - 16), "Sources checked through ~11:30 UTC, Mon 23 Nov 2026.",
+d.text((DX0 + 8, DY1 - 16), "Sources checked through ~21:30 UTC, Mon 23 Nov 2026.",
        font=F["cap"], fill=GREY)
 
-# ---------------------------------------------------------------- ALSO list 794-978
-d.text((8, 796), "ALSO ON MONDAY 23 NOVEMBER \u2014 14 MORE STORIES",
+# ---------------------------------------------------------------- ALSO list 816-980
+d.text((8, 816), "ALSO ON MONDAY 23 NOVEMBER — 14 MORE STORIES",
        font=F["sect"], fill=INK)
-d.line([8, 814, 1016, 814], fill=INK, width=1)
+d.line([8, 834, 1016, 834], fill=INK, width=1)
 also = [
-    "Bitcoin wobbles near $61,000; Hayes warns of $55k",
+    "Bitcoin closes at $61,356 (+4.68%); Hayes warns of $55k",
     "Paolo Bulgari funeral held in Rome (died Sat)",
     "Thanksgiving travel: Delta's Sunday meltdown + storm watch",
     "US intel chief defends Trump calling Putin 'friend'",
     "West Bank medics attacks up 350%, rights group says",
-    "Syria\u2013EU talks progress; repatriation fears",
+    "Syria–EU talks progress; repatriation fears",
     "Taliban police protect Afghanistan's vanishing forests",
     "Meta's Alexandr Wang: superintelligence 'arriving'",
     "Trump to host a third crypto gala",
@@ -552,18 +649,18 @@ also = [
 for i, item in enumerate(also):
     col, row = i % 3, i // 3
     x0 = 8 + col * 336
-    y0 = 826 + row * 28
-    d.text((x0, y0), f"{i + 16:02d}", font=F["list_b"], fill=RED)
+    y0 = 842 + row * 28
+    d.text((x0, y0), f"{i + 17:02d}", font=F["list_b"], fill=RED)
     for j, ln in enumerate(wrap(d, item, F["list"], 306)[:2]):
         d.text((x0 + 26, y0 + j * 12), ln, font=F["list"], fill=INK)
 
-# ---------------------------------------------------------------- footer 982-1024
+# ---------------------------------------------------------------- footer 984-1024
 d.line([8, 984, 1016, 984], fill=INK, width=2)
 d.text((8, 990),
-       "Sources: Reuters \u00b7 BBC \u00b7 AP \u00b7 AFP \u00b7 Al Jazeera \u00b7 ESPNcricinfo \u00b7 Lowy Institute \u00b7 Oxfam/CEOBS \u00b7 official statements",
+       "Sources: Reuters · BBC · AP · AFP · Al Jazeera · ESPNcricinfo · Lowy Institute · Oxfam/CEOBS · official statements",
        font=F["foot"], fill=GREY)
 d.text((8, 1002),
-       "29 stories checked against reporting available on 23 Nov 2026 to ~11:30 UTC. Scenes are drawn illustrations, not photographs.",
+       "30 stories checked against reporting available on 23 Nov 2026 to ~21:30 UTC. Scenes are drawn illustrations, not photographs.",
        font=F["foot"], fill=GREY)
 r1 = "REPORTED = carried by the day's wires   CLAIM = one side's account, labelled"
 d.text((1014 - d.textlength(r1, font=F["foot"]), 990), r1, font=F["foot"],
